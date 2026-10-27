@@ -11,7 +11,7 @@ export type ParsedTrace = {
 }
 
 const regex =
-	/^\s*at (?:(?<fn>.*?)\s+\()?(?<file>.*?):(?<line>\d+):(?<col>\d+)\)?$/
+	/^\s*at (?:async\s+)?(?:(?<fn>.*?)\s+\()?(?<file>.*?):(?<line>\d+):(?<col>\d+)\)?$/
 
 export function parseFrame(line: string): StackFrame | null {
 	const match = line.match(regex)
@@ -22,7 +22,7 @@ export function parseFrame(line: string): StackFrame | null {
 	const { fn, file, line: lineStr, col: colStr } = match.groups
 
 	return {
-		fn,
+		fn: fn || undefined,
 		file,
 		line: Number(lineStr),
 		col: Number(colStr),
