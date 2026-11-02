@@ -10,3 +10,10 @@ export const ExplanationSchema = z.object({
 })
 
 export type Explanation = z.infer<typeof ExplanationSchema>
+
+export const RequestBodySchema = z.object({
+	error: z.string().trim().min(1, 'Paste an error first').max(8000),
+	code: z.string().max(8000).optional(),
+})
+
+export type RequestBody = z.infer<typeof RequestBodySchema>
