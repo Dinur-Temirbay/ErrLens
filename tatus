@@ -1,0 +1,17 @@
+* [33m29be403[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m fix: separate tsconfig for api.
+[31m|[m * [33me14192a[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m feat: retry model call on 429 and 503.
+[31m|[m[31m/[m  
+* [33md267332[m feat: call model from explain endpoint
+* [33mfd5c0d6[m feat: add explain endpoint skeleton
+* [33mbcf8ce7[m feat: add parseStackTrace и test: cover parseStackTrace
+* [33md77dd30[m feat: support async frames in parseFrame.
+* [33mcd84050[m feat: add parseFrame
+* [33m5e1c5b5[m test: cover parseExplanation
+* [33m4d0fdef[m feat: add parseExplanation
+* [33m36af08d[m feat: add explanation schema
+ [32m\[m 
+  * [33mf13db3a[m init project
+* [33me2f5b1c[m Agent host session 207e60e1-3113-4570-8ca0-481f164eb5b3 - turn 3
+* [33m6a50e1f[m Agent host session 207e60e1-3113-4570-8ca0-481f164eb5b3 - turn 3 start
+* [33m3439a5c[m Agent host session 207e60e1-3113-4570-8ca0-481f164eb5b3 - turn 2
+* [33m33756b7[m Agent host session 207e60e1-3113-4570-8ca0-481f164eb5b3 - turn 2 start
