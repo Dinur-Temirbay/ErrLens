@@ -1,5 +1,5 @@
-import { RequestBodySchema } from '../src/lib/schema'
-import { parseExplanation } from '../src/lib/parseExplanation'
+import { RequestBodySchema } from '../src/lib/schema.js'
+import { parseExplanation } from '../src/lib/parseExplanation.js'
 import * as z from 'zod'
 
 const API_URL =

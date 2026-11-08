@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import { ExplanationSchema, type Explanation } from './schema'
+import { ExplanationSchema, type Explanation } from './schema.js'
 
 export type ParseResult =
 	| { ok: true; data: Explanation }
