@@ -16,6 +16,56 @@ Return ONLY valid JSON, no markdown, no code fences, with these fields:
 - docs: array of up to 3 objects { title: string, url: string }
 Reference the exact file and line from the stack trace when present.`
 
+const RETRY_STATUSES = [429, 503]
+const MAX_ATTEMPTS = 3
+const ATTEMPT_TIMEOUT_MS = 10_000
+
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
+async function callModel(
+	apiKey: string,
+	error: string,
+	code?: string,
+): Promise<Response> {
+	for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+		const isLast = attempt === MAX_ATTEMPTS
+
+		try {
+			const response = await fetch(API_URL, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${apiKey}`,
+				},
+				body: JSON.stringify({
+					model: MODEL,
+					messages: [
+						{ role: 'system', content: SYSTEM_PROMPT },
+						{
+							role: 'user',
+							content: `Error:\n${error}\n\nCode:\n${code ?? '(none)'}`,
+						},
+					],
+				}),
+				signal: AbortSignal.timeout(ATTEMPT_TIMEOUT_MS),
+			})
+
+			if (!RETRY_STATUSES.includes(response.status) || isLast) {
+				return response
+			}
+
+			await response.body?.cancel()
+		} catch (err) {
+			console.error('Model request failed, attempt', attempt, err)
+			if (isLast) break
+		}
+
+		await sleep(1000 * attempt)
+	}
+
+	return new Response('Upstream unavailable', { status: 504 })
+}
+
 export default {
 	async fetch(request: Request) {
 		if (request.method !== 'POST') {
@@ -47,23 +97,7 @@ export default {
 
 		const { error, code } = result.data
 
-		const upstream = await fetch(API_URL, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${apiKey}`,
-			},
-			body: JSON.stringify({
-				model: MODEL,
-				messages: [
-					{ role: 'system', content: SYSTEM_PROMPT },
-					{
-						role: 'user',
-						content: `Error:\n${error}\n\nCode:\n${code ?? '(none)'}`,
-					},
-				],
-			}),
-		})
+		const upstream = await callModel(apiKey, error, code)
 
 		if (!upstream.ok) {
 			console.error('Provider error', upstream.status, await upstream.text())
