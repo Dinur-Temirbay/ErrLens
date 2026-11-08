@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parseFrame, parseStackTrace } from './parseStackTrace'
+import { parseFrame, parseStackTrace } from './parseStackTrace.ts'
 
 describe('parseFrame', () => {
 	it('parses frame with function name', () => {
