@@ -4,7 +4,7 @@ import * as z from 'zod'
 
 const API_URL =
 	'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions'
-const MODEL = 'gemini-3.6-flash'
+const MODEL = 'gemini-35-flash-lite'
 
 const SYSTEM_PROMPT = `You explain JavaScript/TypeScript/React errors to junior developers.
 Return ONLY valid JSON, no markdown, no code fences, with these fields:
